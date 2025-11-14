@@ -13,7 +13,7 @@ const startServer = async () => {
     Object.values(dbModels);
 
     //  CREA LAS TABLAS AUTOMÁTICAMENTE SI NO EXISTEN
-    await sequelize.sync({ alter: false });  
+    await sequelize.sync({ alter: true });  
     // usa alter: true SOLO si estás modificando columnas durante desarrollo
 
     const server = app.listen(PORT, () => {
