@@ -232,14 +232,3 @@ Puedes ignorarlos temporalmente si solo deseas levantar el backend principal.
 - Filtros por fecha, técnico, estado
 - Reportes exportables
 
----
-
-
----
-
-
----
-
-## 📄 Licencia
-
-Este proyecto es de uso privado/interno.
