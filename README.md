@@ -234,22 +234,9 @@ Puedes ignorarlos temporalmente si solo deseas levantar el backend principal.
 
 ---
 
-## 🚀 Contribuir
-
-1. Clonar y configurar el proyecto según las instrucciones de arriba.
-2. Crear una rama con tu feature: `git checkout -b feature/nombre-feature`
-3. Hacer commit de tus cambios: `git commit -m "Descripción del cambio"`
-4. Subir tu rama al repositorio remoto: `git push origin feature/nombre-feature`
-5. Abrir un Pull Request para revisión y merge.
 
 ---
 
-## 📝 Notas
-
-- Todos los módulos siguen la misma arquitectura: **Controller → Service → Model**
-- Los modelos usan Sequelize con conversión automática de UUID (string) ↔ BINARY(16)
-- Todas las tablas principales incluyen `empresa_id` para aislamiento multiempresa
-- Los IDs son UUID v4 almacenados como BINARY(16) para optimización
 
 ---
 
