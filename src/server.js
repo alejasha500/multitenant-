@@ -1,21 +1,28 @@
 import app from "./app.js";
 import { connectDB, closeDB , sequelize } from "./db/database.js";
 import { dbModels } from './db/models/index.js';
+import { config } from './config/env.js';
 
 
 
-const PORT = process.env.PORT;
+const PORT = config.app.port ;
 
 const startServer = async () => {
   try {
     await connectDB();
+       
+       //  Registrar todos los modelos en Sequelize
+          Object.values(dbModels).forEach(model => {
+              if (model.associate) {
+              model.associate(sequelize.models);
+            }
+           });
 
-    Object.values(dbModels);
-
-    //  CREA LAS TABLAS AUTOMÁTICAMENTE SI NO EXISTEN
-    await sequelize.sync({ alter: true });  
-    // usa alter: true SOLO si estás modificando columnas durante desarrollo
-
+       //  CREA LAS TABLAS AUTOMÁTICAMENTE SI NO EXISTEN
+       // EN PRODUCCIÓN, USAR MIGRACIONES EN LUGAR DE sync() O SOLO USAR sync()
+          await sequelize.sync({ alter: true });
+           console.log(' Tablas sincronizadas correctamente');
+    
     const server = app.listen(PORT, () => {
       console.log(` Servidor corriendo en el puerto ${PORT}`);
     });

@@ -5,62 +5,67 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import xssClean from "xss-clean";
 import cookieParser from "cookie-parser";
-import { errorHandler, notFound } from './middlewares/errorMiddlewares.js';
 
+import { config } from "../src/config/env.js";
+import { errorHandler, notFound } from "./middlewares/errorMiddlewares.js";
 
-// ===============================
-//  Inicialización de Express
-// ===============================
 const app = express();
 
-// Permite recibir JSON y datos de formularios
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS
+app.use(cors({ credentials: true, origin: config.security.corsOrigin }));
 
-// ===============================
-//  Seguridad y middlewares globales
-// ===============================
-
-// CORS: permite peticiones desde otros orígenes (como tu frontend)
-app.use(cors({ credentials: true, origin: true }));
-
-// Logs de peticiones HTTP (útil para desarrollo)
+// Logging
 app.use(morgan("dev"));
 
-// Helmet: agrega cabeceras de seguridad para proteger la API
+// Helmet
 app.use(helmet());
 
-// Protección contra ataques XSS: sanitiza la entrada del usuario
+// XSS
 app.use(xssClean());
 
-// Permite leer cookies (JWT, sesiones, etc)
+// Cookies
 app.use(cookieParser());
 
-// Rate limit: evita ataques de fuerza bruta limitando peticiones
-app.use(rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 100 // Máximo de solicitudes permitidas por IP
-}));
-
-
-// ===============================
-//  Ruta de health check
-// ===============================
-// Sirve para que servicios como UptimeRobot o Render mantengan activa la API
-app.use('/health', (req, res) => {
-    res.status(200).json({ message: 'api is healthy' });
+// RATE LIMIT 
+const limiter = rateLimit({
+    windowMs: parseRateWindow(config.security.rateLimit.windowMs),
+    max: config.security.rateLimit.max,
+    message: {
+        status: 429,
+        message: "Demasiadas solicitudes. Intenta de nuevo más tarde.",
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
 });
 
+app.use(limiter);
 
-// ===============================
-//  Manejo de errores globales
-// ===============================
-app.use(errorHandler); // Maneja errores centralizados
-app.use(notFound);     // Maneja rutas no existentes
+// Función "15m" → ms
+function parseRateWindow(windowStr) {
+    if (!windowStr) return 15 * 60 * 1000;
 
+    const value = parseInt(windowStr);
+    const unit = windowStr.slice(-1);
 
-// ===============================
-//  Exportar aplicación
-// ===============================
+    switch (unit) {
+        case "s": return value * 1000;
+        case "m": return value * 60 * 1000;
+        case "h": return value * 60 * 60 * 1000;
+        case "d": return value * 24 * 60 * 60 * 1000;
+        default:  return value;
+    }
+}
+
+// Health
+app.get("/health", (req, res) => {
+    res.status(200).json({ message: "API is healthy" });
+});
+
+// Errores
+app.use(errorHandler);
+app.use(notFound);
+
 export default app;

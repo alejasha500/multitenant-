@@ -1,36 +1,37 @@
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
-dotenv.config();
+import { config } from "../config/env.js"; 
+
 
 export const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  config.database.name,      
+  config.database.user,      
+  config.database.password,  
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    host: config.database.host,  
+    port: config.database.port,  
     dialect: "mysql",
     logging: false,
     define: {
-       freezeTableName: true,
-    }
+      freezeTableName: true,
+    },
   }
 );
-
+// Conectar a la BD
 export async function connectDB() {
   try {
     await sequelize.authenticate();
-    console.log(" Database connected.");
+    console.log("✔ Database connected.");
   } catch (error) {
     console.error(" Error al conectar la base de datos:", error);
     throw error;
   }
 }
 
+// Cerrar conexión
 export async function closeDB() {
   try {
     await sequelize.close();
-    console.log(" Database closed.");
+    console.log("✔ Database closed.");
   } catch (error) {
     console.error(" Error al cerrar DB:", error);
     throw error;
