@@ -1,39 +1,38 @@
-import { Sequelize } from "sequelize";
-import { config } from "../config/env.js"; 
+import { PrismaClient } from "@prisma/client";
 
 
-export const sequelize = new Sequelize(
-  config.database.name,      
-  config.database.user,      
-  config.database.password,  
-  {
-    host: config.database.host,  
-    port: config.database.port,  
-    dialect: "mysql",
-    logging: false,
-    define: {
-      freezeTableName: true,
-    },
-  }
-);
-// Conectar a la BD
-export async function connectDB() {
+const globalForPrisma = global;
+
+export const prisma = globalForPrisma.prisma || new PrismaClient({
+  log: process.env.NODE_ENV === 'development' 
+    ? ['query', 'error', 'warn'] 
+    : ['error'], 
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
+
+
+export async function connectDb() {
   try {
-    await sequelize.authenticate();
-    console.log("✔ Database connected.");
+    await prisma.$connect();
+    console.log("Conexión a la base de datos exitosa");
+    
+  
+    await prisma.$queryRaw`SELECT 1`;
+    console.log(" Base de datos respondiendo correctamente");
+    
   } catch (error) {
-    console.error(" Error al conectar la base de datos:", error);
-    throw error;
+    console.error("Error de conexión a la base de datos:", error);
+    process.exit(1);
   }
 }
 
-// Cerrar conexión
-export async function closeDB() {
-  try {
-    await sequelize.close();
-    console.log("✔ Database closed.");
-  } catch (error) {
-    console.error(" Error al cerrar DB:", error);
-    throw error;
-  }
+
+export async function disconnectDb() {
+  await prisma.$disconnect();
+  console.log(" Desconectado de la base de datos");
 }
+
+export default prisma;
