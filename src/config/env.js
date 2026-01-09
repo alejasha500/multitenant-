@@ -9,7 +9,7 @@ dotenv.config();
 import { validateEnv } from "./validateEnv.js";
 
 // Ejecutamos la validación (devuelve un objeto con todos los env ya limpios)
-const env = validateEnv();
+export const env = validateEnv();
 
 
 export const config = {
@@ -17,14 +17,6 @@ export const config = {
         name: env.APP_NAME,
         env: env.NODE_ENV,
         port: env.PORT,
-    },
-
-    database: {
-        host: env.DB_HOST,
-        port: env.DB_PORT,
-        user: env.DB_USER,
-        password: env.DB_PASSWORD,
-        name: env.DB_NAME,
     },
 
     jwt: {

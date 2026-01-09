@@ -5,9 +5,9 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import xssClean from "xss-clean";
 import cookieParser from "cookie-parser";
-
 import { config } from "../src/config/env.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddlewares.js";
+import userRouter from './modules/auth/authRoutes.js'
 
 const app = express();
 
@@ -58,6 +58,10 @@ function parseRateWindow(windowStr) {
         default:  return value;
     }
 }
+
+
+// ruta de auth
+app.use('/api/users', userRouter)
 
 // Health
 app.get("/health", (req, res) => {

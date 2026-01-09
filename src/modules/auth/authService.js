@@ -5,14 +5,14 @@ import { ConflictError } from '../../errors/indexError.js'
 import { createEmpresa } from '../empresa/empresaReposity.js'
 import { createUsuario } from '../users/userReposity.js'
 import { createRol, assignRolToUsuario } from '../role/roleReposity.js'
-import { findUserByEmail } from '../users/userReposity.js'
+import { findByEmailWithRoles } from './authResposity.js'
 import { sanitizeUser } from '../../utils/sanitize.js'
 
 export async function registerEmpresaService(data) {
   const { empresa, admin } = data
 
   // 1️ verificar si ya existe el email
-  const existingUser = await findUserByEmail(admin.email)
+  const existingUser = await findByEmailWithRoles(admin.email)
   if (existingUser) {
     throw new ConflictError('El email ya está registrado')
   }

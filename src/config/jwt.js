@@ -15,7 +15,7 @@ export function generateAccessToken(payload) {
  * Genera un Refresh Token (se usa para renovar sesiones).
  * Importante: no se debe usar para acceder a rutas protegidas.
  */
-export function GenerateRefreshToken(payload) {
+export function generateRefreshToken(payload) {
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
     expiresIn: env.JWT_REFRESH_EXPIRES, 
   });
