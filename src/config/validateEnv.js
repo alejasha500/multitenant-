@@ -15,14 +15,12 @@ const envSchema = Joi.object({
   PORT: Joi.number().default(3000),
   APP_NAME: Joi.string().default("multitenant"),
 
+
+
   // =============================
-  // BASE DE DATOS
+  // BASE DE DATOS (Prisma)
   // =============================
-  DB_HOST: Joi.string().required(),
-  DB_PORT: Joi.number().required(),
-  DB_USER: Joi.string().required(),
-  DB_PASSWORD: Joi.string().allow(""),
-  DB_NAME: Joi.string().required(),
+  DATABASE_URL: Joi.string().required(),
 
   // =============================
   // JWT

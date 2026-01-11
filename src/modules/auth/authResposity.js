@@ -106,3 +106,26 @@ export const findByIdWithRoles = async (userId) => {
   return user ? convertPrismaToReadable(user) : null;
 };
 
+
+
+/**
+ * ============================================================
+ * BUSCAR NIT DE EMPRESA A VER SI EXISTE 
+ * ============================================================
+ */
+
+
+export const findEmpresaByNit = async (nit) => {
+  if (!nit) return null;
+
+  return prisma.empresa.findUnique({
+    where: {
+      nit
+    },
+    select: {
+      id: true
+    }
+  });
+};
+
+

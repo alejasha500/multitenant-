@@ -1,5 +1,5 @@
 export function sanitizeUser(user) {
     if (!user) return null
-    const { password, ...safeUser } = user
+    const { password_hash, ...safeUser } = user
     return safeUser
 }
