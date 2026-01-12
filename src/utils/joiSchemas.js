@@ -1,6 +1,7 @@
 import Joi from 'joi';
 
 export const registerEmpresaSchema = Joi.object({
+  
   empresa: Joi.object({
     nombre: Joi.string().min(3).max(150).required(),
     nit: Joi.string().max(50).optional().allow(null, ''),
@@ -14,4 +15,21 @@ export const registerEmpresaSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required()
   }).required()
+});
+
+
+// Valida los datos necesarios para el proceso de login
+
+export const loginSchema = Joi.object({
+
+  email: Joi.string()
+    .email()
+    .required(),
+
+  password: Joi.string()
+    .min(8)
+    .required(),
+  empresaId: Joi.string()
+    .uuid()
+    .required()
 });

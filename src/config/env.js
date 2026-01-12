@@ -9,7 +9,7 @@ dotenv.config();
 import { validateEnv } from "./validateEnv.js";
 
 // Ejecutamos la validación (devuelve un objeto con todos los env ya limpios)
-export const env = validateEnv();
+ const env = validateEnv();
 
 
 export const config = {
@@ -22,11 +22,13 @@ export const config = {
     jwt: {
         access: {
             secret: env.JWT_ACCESS_SECRET,
-            expiresIn: env.JWT_ACCESS_EXPIRES, 
+            expiresIn: env.JWT_ACCESS_EXPIRES,
+            cookieMaxAge: env.COOKIE_ACCESS_MAX_AGE,
         },
         refresh: {
             secret: env.JWT_REFRESH_SECRET,
-            expiresIn: env.JWT_REFRESH_EXPIRES, 
+            expiresIn: env.JWT_REFRESH_EXPIRES,
+            cookieMaxAge: env.COOKIE_REFRESH_MAX_AGE, 
         },
     },
 

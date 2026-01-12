@@ -1,4 +1,4 @@
-import { generateUuidBuffer} from '../../utils/uuid.js';
+import { generateUuidBuffer, convertPrismaToReadable} from '../../utils/uuid.js';
 
 export const createUsuario = async (db, data) => {
   return db.usuario.create({
@@ -24,4 +24,33 @@ export const createUsuario = async (db, data) => {
       updated_at: true
     }
   })
+}
+
+
+
+export const findUserForLogin = async (db ,email, empresaId) => {
+  const user = await db.usuario.findFirst({
+    where: {
+      email,
+      empresa_id: uuidToBuffer(empresaId),
+      activo: 1
+    },
+    select: {
+      id: true,
+      empresa_id: true,
+      email: true,
+      password_hash: true,
+      roles: {
+        select: {
+          rol: {
+            select: {
+              nombre: true
+            }
+          }
+        }
+      }
+    }
+  })
+
+  return user ? convertPrismaToReadable(user) : null
 }

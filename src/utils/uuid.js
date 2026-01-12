@@ -44,26 +44,38 @@ export const generateUuidString = () => {
  */
 export const convertPrismaToReadable = (obj) => {
   if (!obj) return obj;
-  
+
+  // Si es un array, convertir cada elemento
   if (Array.isArray(obj)) {
     return obj.map(item => convertPrismaToReadable(item));
   }
-  
+
+  // Si es un objeto
   if (typeof obj === 'object') {
     const converted = {};
+
     for (const [key, value] of Object.entries(obj)) {
-      if (Buffer.isBuffer(value)) {
-        converted[key] = bufferToUuid(value);
+
+      // UUID binario (Buffer o Uint8Array)
+      if (Buffer.isBuffer(value) || value instanceof Uint8Array) {
+        converted[key] = bufferToUuid(Buffer.from(value));
+
+      // Fechas
       } else if (value instanceof Date) {
         converted[key] = value;
+
+      // Objetos anidados
       } else if (typeof value === 'object' && value !== null) {
         converted[key] = convertPrismaToReadable(value);
+
+      // Primitivos
       } else {
         converted[key] = value;
       }
     }
+
     return converted;
   }
-  
+
   return obj;
 };

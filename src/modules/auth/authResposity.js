@@ -1,8 +1,6 @@
 import { prisma } from '../../db/database.js';
 import {
-  uuidToBuffer,
-  convertPrismaToReadable
-} from '../../utils/uuid.js';
+  uuidToBuffer, convertPrismaToReadable } from '../../utils/uuid.js';
 
 /**
  * ============================================================
