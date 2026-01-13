@@ -1,4 +1,4 @@
-import { generateUuidBuffer, convertPrismaToReadable} from '../../utils/uuid.js';
+import { generateUuidBuffer, convertPrismaToReadable, uuidToBuffer} from '../../utils/uuid.js';
 
 export const createUsuario = async (db, data) => {
   return db.usuario.create({

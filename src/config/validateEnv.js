@@ -33,6 +33,10 @@ const envSchema = Joi.object({
   JWT_REFRESH_EXPIRES: Joi.string().default("7d"),
   COOKIE_REFRESH_MAX_AGE: Joi.number().integer().positive().required(),
 
+   COOKIE_SECURE: Joi.boolean().required(),
+   COOKIE_SAMESITE: Joi.string().valid('lax', 'strict', 'none').required(),
+
+
   // =============================
   // SEGURIDAD
   // =============================

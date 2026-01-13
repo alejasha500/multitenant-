@@ -24,11 +24,15 @@ export const config = {
             secret: env.JWT_ACCESS_SECRET,
             expiresIn: env.JWT_ACCESS_EXPIRES,
             cookieMaxAge: env.COOKIE_ACCESS_MAX_AGE,
+            secure: env.COOKIE_SECURE,
+            sameSite: env.COOKIE_SAMESITE,
         },
         refresh: {
             secret: env.JWT_REFRESH_SECRET,
             expiresIn: env.JWT_REFRESH_EXPIRES,
-            cookieMaxAge: env.COOKIE_REFRESH_MAX_AGE, 
+            cookieMaxAge: env.COOKIE_REFRESH_MAX_AGE,
+            secure: env.COOKIE_SECURE,
+            sameSite: env.COOKIE_SAMESITE, 
         },
     },
 

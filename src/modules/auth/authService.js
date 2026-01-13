@@ -1,6 +1,6 @@
 import { prisma } from '../../db/database.js'
 import { comparePassword, hashPassword } from '../../config/bcrypt.js'
-import { generateAccessToken, generateRefreshToken } from '../../config/jwt.js'
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../config/jwt.js'
 import { ConflictError, UnauthorizedError} from '../../errors/indexError.js'
 import { createEmpresa } from '../empresa/empresaReposity.js'
 import { createUsuario, findUserForLogin } from '../users/userReposity.js'
@@ -76,7 +76,7 @@ if (existingEmpresa) {
 export async function loginService(data) {
      const { email, password, empresaId } = data;
 
-     const user = await findUserForLogin(email, empresaId)
+     const user = await findUserForLogin(prisma, email, empresaId)
      if (!user) throw new UnauthorizedError('credenciales invalidas')
 
       const isValid = await comparePassword(password, user.password_hash)
@@ -110,4 +110,17 @@ export async function loginService(data) {
              refreshToken
              }
 
+}
+
+
+
+export function refreshService(refreshToken) {
+  const payload = verifyRefreshToken(refreshToken)
+
+  return {
+    accessToken: generateAccessToken({
+      id: payload.id,
+      empresaId: payload.empresaId
+    })
+  }
 }
