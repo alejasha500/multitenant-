@@ -27,7 +27,13 @@ if (existingEmpresa) {
   // 3️ transacción
   const result = await prisma.$transaction(async (tx) => {
 
-    const empresaCreada = await createEmpresa(tx, empresa)
+    const empresaCreada = await createEmpresa(tx, {
+       nombre: empresa.nombre,
+       nit: empresa.nit,
+       direccion: empresa.direccion,
+       telefono: empresa.telefono,
+       email: empresa.email
+    })
 
     const rolAdmin = await createRol(tx, {
       empresaId: empresaCreada.id,
@@ -36,9 +42,10 @@ if (existingEmpresa) {
 
     const usuarioAdmin = await createUsuario(tx, {
       empresaId: empresaCreada.id,
-      nombre: admin.nombre,
-      email: admin.email,
-      passwordHash
+      nombre: admin.nombre_usuario,
+      email: admin.email_usuario,
+      passwordHash,
+      telefono: admin,telefono_usuario
     })
 
     await assignRolToUsuario(tx, {

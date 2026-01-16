@@ -12,7 +12,7 @@ export const createUsuario = async (db, data) => {
       activo: 1,
       created_at: new Date(),
       updated_at: new Date()
-    },
+    },  
     select: {
       id: true,
       empresa_id: true,

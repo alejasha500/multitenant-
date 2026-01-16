@@ -61,7 +61,7 @@ function parseRateWindow(windowStr) {
 
 
 // ruta de auth
-app.use('/api/users', userRouter)
+app.use('/api/auth', userRouter)
 
 // Health
 app.get("/health", (req, res) => {

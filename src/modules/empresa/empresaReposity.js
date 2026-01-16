@@ -7,7 +7,7 @@ export const createEmpresa = async (db, data) => {
   return db.empresa.create({
     data: {
       id: generateUuidBuffer(),
-      nombre: data.nombre,
+      nombre: data.nombre ?? null,
       nit: data.nit ?? null,
       direccion: data.direccion ?? null,
       telefono: data.telefono ?? null,
