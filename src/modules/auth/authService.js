@@ -42,10 +42,10 @@ if (existingEmpresa) {
 
     const usuarioAdmin = await createUsuario(tx, {
       empresaId: empresaCreada.id,
-      nombre: admin.nombre_usuario,
-      email: admin.email_usuario,
+      nombre: admin.nombre,
+      email: admin.email,
       passwordHash,
-      telefono: admin,telefono_usuario
+      telefono: admin.telefono
     })
 
     await assignRolToUsuario(tx, {

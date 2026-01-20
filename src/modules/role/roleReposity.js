@@ -10,7 +10,7 @@ export const createRol = async (db, data) => {
       id: generateUuidBuffer(),
       empresa_id: data.empresaId, 
       nombre: data.nombre,        // "ADMIN"
-      descripcion: data.descripcion ?? 'Administrador del sistema',
+      descripcion: data.descripcion ?? 'ADMIN',
       es_sistema: 1,
       created_at: new Date()
     }

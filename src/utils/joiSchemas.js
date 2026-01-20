@@ -13,7 +13,8 @@ export const registerEmpresaSchema = Joi.object({
   admin: Joi.object({
     nombre: Joi.string().min(3).max(150).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(8).required()
+    password: Joi.string().min(8).required(),
+    telefono: Joi.string().max(25).optional().allow(null, '')
   }).required()
 });
 
